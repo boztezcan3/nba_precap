@@ -1,0 +1,59 @@
+{
+ "run_date": "2026-11-17",
+ "label": "Tuesday, Nov 17, 2026",
+ "window": "Nov 15 to Nov 16",
+ "items": [
+  {
+   "away": "Los Angeles Lakers",
+   "home": "Phoenix Suns",
+   "date": "Sun, Nov 15",
+   "score": 47,
+   "tags": [
+    "Luka Doncic played"
+   ]
+  },
+  {
+   "away": "San Antonio Spurs",
+   "home": "Utah Jazz",
+   "date": "Sun, Nov 15",
+   "score": 38,
+   "tags": [
+    "Clutch finish",
+    "Big comeback",
+    "Back and forth",
+    "2 key players out",
+    "Victor Wembanyama played"
+   ]
+  },
+  {
+   "away": "Houston Rockets",
+   "home": "Washington Wizards",
+   "date": "Sun, Nov 15",
+   "score": 36,
+   "tags": [
+    "Back and forth",
+    "Alperen Sengun played"
+   ]
+  },
+  {
+   "away": "Phoenix Suns",
+   "home": "Denver Nuggets",
+   "date": "Mon, Nov 16",
+   "score": 33,
+   "tags": [
+    "Nikola Jokic played"
+   ]
+  },
+  {
+   "away": "Indiana Pacers",
+   "home": "Philadelphia 76ers",
+   "date": "Sun, Nov 15",
+   "score": 33,
+   "tags": [
+    "Back and forth",
+    "2 key players out",
+    "LeBron James played"
+   ]
+  }
+ ]
+}

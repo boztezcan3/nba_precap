@@ -20,7 +20,7 @@ MONTHLY_TOP_N = 10
 SHOW_REASONS = True    # tags like "Comeback" / "Clutch finish" (mild hints, no winners/scores)
 
 FAV_PLAYERS = ["Luka Doncic", "Victor Wembanyama", "Nikola Jokic", "LeBron James", "Alperen Sengun"]
-FAV_TEAMS = []         # ESPN abbreviations, e.g. ["LAL", "SA", "DEN"] (Spurs = SA, Knicks = NY)
+FAV_TEAMS = ["NY","MIN"]         # ESPN abbreviations, e.g. ["LAL", "SA", "DEN"] (Spurs = SA, Knicks = NY)
 
 # Weights add up to 100. Tune to taste.
 WEIGHTS = {

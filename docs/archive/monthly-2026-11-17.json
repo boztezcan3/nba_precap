@@ -1,0 +1,125 @@
+{
+ "run_date": "2026-11-17",
+ "file": "monthly-2026-11-17",
+ "kind": "monthly",
+ "label": "Monthly digest: Tuesday, Nov 17, 2026",
+ "window": "Oct 18 to Nov 16",
+ "items": [
+  {
+   "away": "Dallas Mavericks",
+   "home": "San Antonio Spurs",
+   "date": "Wed, Nov 4",
+   "score": 77,
+   "tags": [
+    "Clutch finish",
+    "Monster individual night",
+    "Victor Wembanyama played"
+   ]
+  },
+  {
+   "away": "Los Angeles Lakers",
+   "home": "Utah Jazz",
+   "date": "Sun, Oct 25",
+   "score": 74,
+   "tags": [
+    "Clutch finish",
+    "Big comeback",
+    "Monster individual night",
+    "Luka Doncic played"
+   ]
+  },
+  {
+   "away": "Portland Trail Blazers",
+   "home": "Los Angeles Lakers",
+   "date": "Tue, Oct 27",
+   "score": 70,
+   "tags": [
+    "Clutch finish",
+    "Big comeback",
+    "Back and forth",
+    "Luka Doncic played"
+   ]
+  },
+  {
+   "away": "Portland Trail Blazers",
+   "home": "Los Angeles Lakers",
+   "date": "Fri, Nov 6",
+   "score": 68,
+   "tags": [
+    "Big comeback",
+    "Monster individual night",
+    "Luka Doncic played"
+   ]
+  },
+  {
+   "away": "Utah Jazz",
+   "home": "Houston Rockets",
+   "date": "Fri, Nov 13",
+   "score": 63,
+   "tags": [
+    "Clutch finish",
+    "Big comeback",
+    "Back and forth",
+    "Monster individual night",
+    "1 key player out",
+    "Alperen Sengun played"
+   ]
+  },
+  {
+   "away": "New Orleans Pelicans",
+   "home": "Denver Nuggets",
+   "date": "Sat, Oct 24",
+   "score": 62,
+   "tags": [
+    "Overtime",
+    "Clutch finish",
+    "Big comeback",
+    "Nikola Jokic played"
+   ]
+  },
+  {
+   "away": "San Antonio Spurs",
+   "home": "Utah Jazz",
+   "date": "Wed, Oct 28",
+   "score": 60,
+   "tags": [
+    "Overtime",
+    "Clutch finish",
+    "Big comeback",
+    "Back and forth",
+    "Monster individual night",
+    "1 key player out",
+    "Victor Wembanyama played"
+   ]
+  },
+  {
+   "away": "Denver Nuggets",
+   "home": "Memphis Grizzlies",
+   "date": "Wed, Nov 11",
+   "score": 54,
+   "tags": [
+    "Clutch finish",
+    "Nikola Jokic played"
+   ]
+  },
+  {
+   "away": "Los Angeles Lakers",
+   "home": "Atlanta Hawks",
+   "date": "Mon, Nov 9",
+   "score": 53,
+   "tags": [
+    "Luka Doncic played"
+   ]
+  },
+  {
+   "away": "Portland Trail Blazers",
+   "home": "Denver Nuggets",
+   "date": "Mon, Nov 2",
+   "score": 53,
+   "tags": [
+    "Big comeback",
+    "Nikola Jokic played"
+   ]
+  }
+ ]
+}

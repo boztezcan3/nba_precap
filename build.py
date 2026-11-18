@@ -5,7 +5,7 @@ Pulls finished games from the last DAYS_BACK days from ESPN's public JSON feeds,
 scores each one on YOUR criteria, and writes docs/index.html with the top TOP_N.
 No scores, winners or box-score links ever reach the page.
 """
-import html, json, os, sys, time, unicodedata
+import argparse, html, json, os, sys, time, unicodedata
 from pathlib import Path
 from datetime import datetime, timedelta
 from zoneinfo import ZoneInfo
@@ -15,6 +15,8 @@ import requests
 # ───────────────────────── YOUR SETTINGS ─────────────────────────
 DAYS_BACK = 2          # window: this many ET days before today
 TOP_N = 5
+MONTHLY_DAYS = 30      # manual "--monthly" digest: window and list size
+MONTHLY_TOP_N = 10
 SHOW_REASONS = True    # tags like "Comeback" / "Clutch finish" (mild hints, no winners/scores)
 
 FAV_PLAYERS = ["Luka Doncic", "Victor Wembanyama", "Nikola Jokic", "LeBron James", "Alperen Sengun"]
@@ -251,10 +253,10 @@ def score_game(ev):
             "date": when.strftime("%a, %b %-d")}
 
 
-def finished_games():
+def finished_games(days_back):
     today = datetime.now(ET).date()
     out = {}
-    for i in range(1, DAYS_BACK + 1):
+    for i in range(1, days_back + 1):
         day = (today - timedelta(days=i)).strftime("%Y%m%d")
         for ev in get(f"{BASE}/scoreboard?dates={day}&limit=100").get("events", []):
             if ev["status"]["type"].get("completed"):
@@ -282,6 +284,7 @@ li{font-size:13px;border:1px solid var(--line);border-radius:99px;padding:1px 10
 .score small{color:var(--mute);font-size:12px}
 .empty{color:var(--mute)}
 .past{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:16px 20px;margin-bottom:12px}
+.tag{display:inline-block;font:600 12px Barlow,sans-serif;letter-spacing:.06em;text-transform:uppercase;color:var(--bg);background:var(--accent);border-radius:4px;padding:1px 7px;margin-left:8px;vertical-align:middle}
 .past h3{font:700 24px/1.1 'Barlow Condensed',sans-serif;margin:0}.past p{margin:4px 0 8px;color:var(--mute);font-size:14px}
 .past ol{margin:0 0 10px;padding-left:20px;font-size:15px}
 @media(max-width:480px){article{grid-template-columns:32px 1fr;}.score{grid-column:2;text-align:left}.score b{display:inline;font-size:28px}}
@@ -300,7 +303,7 @@ def page(title, heading, sub, nav, body):
 </main></body></html>"""
 
 
-def render(items, window, run_date, nav, heading="Worth watching"):
+def render(items, window, run_date, nav, heading="Worth watching", days=None):
     cards = []
     for i, it in enumerate(items, 1):
         tags = "".join(f"<li>{html.escape(t)}</li>" for t in it["tags"]) if SHOW_REASONS else ""
@@ -309,7 +312,8 @@ def render(items, window, run_date, nav, heading="Worth watching"):
 <p class="date">{html.escape(it['date'])}</p><ul>{tags}</ul></div>
 <div class="score" aria-label="Watch score {it['score']} out of 100"><b>{it['score']}</b><small>watch score</small></div></article>""")
     body = "\n".join(cards) or "<p class='empty'>No finished games in this window yet.</p>"
-    sub = f"Top {len(items)} games from {html.escape(window)}. No scores, no winners. Updated {run_date.strftime('%b %-d, %Y')}."
+    span = f"the last {days} days ({html.escape(window)})" if days else html.escape(window)
+    sub = f"Top {len(items)} games from {span}. No scores, no winners. Updated {run_date.strftime('%b %-d, %Y')}."
     return page("Worth Watching", heading, sub, nav, body)
 
 
@@ -317,30 +321,39 @@ def render_past(entries):
     blocks = []
     for e in entries:  # newest first
         games = "".join(f"<li>{html.escape(g['away'])} at {html.escape(g['home'])}</li>" for g in e["items"])
-        blocks.append(f"""<div class="past"><h3><a href="archive/{e['run_date']}.html">{html.escape(e['label'])}</a></h3>
+        badge = '<span class="tag">Monthly</span>' if e.get("kind") == "monthly" else ""
+        blocks.append(f"""<div class="past"><h3><a href="archive/{e.get('file', e['run_date'])}.html">{html.escape(e['label'])}</a>{badge}</h3>
 <p>Games from {html.escape(e['window'])}</p><ol>{games}</ol></div>""")
     body = "\n".join(blocks) or "<p class='empty'>Nothing archived yet. The first one appears after the next run.</p>"
     return page("Past precaps", "Past precaps", "Every earlier edition, newest first. Still spoiler-free.",
                 '<a href="index.html">&larr; Latest</a>', body)
 
 
-def save_archive(top, window, today):
-    """Write today's edition to docs/archive/ and rebuild docs/past.html from every saved edition."""
+def save_archive(top, window, today, kind="precap"):
+    """Write this edition to docs/archive/ and rebuild docs/past.html from every saved edition."""
     arch = Path("docs/archive")
     arch.mkdir(parents=True, exist_ok=True)
-    key = today.strftime("%Y-%m-%d")
+    day = today.strftime("%Y-%m-%d")
+    monthly = kind == "monthly"
+    stem = f"monthly-{day}" if monthly else day
     nav = '<a href="../index.html">&larr; Latest</a><a href="../past.html">All past precaps</a>'
-    (arch / f"{key}.html").write_text(
-        render(top, window, today, nav, heading=f"Precap, {today.strftime('%b %-d')}"), encoding="utf-8")
-    meta = {"run_date": key, "label": today.strftime("%A, %b %-d, %Y"), "window": window,
+    heading = f"Monthly digest, {today.strftime('%b %-d')}" if monthly else f"Precap, {today.strftime('%b %-d')}"
+    (arch / f"{stem}.html").write_text(
+        render(top, window, today, nav, heading=heading, days=MONTHLY_DAYS if monthly else None), encoding="utf-8")
+    label = today.strftime("%A, %b %-d, %Y")
+    meta = {"run_date": day, "file": stem, "kind": kind, "label": ("Monthly digest: " if monthly else "") + label,
+            "window": window,
             "items": [{k: g[k] for k in ("away", "home", "date", "score", "tags")} for g in top]}
-    (arch / f"{key}.json").write_text(json.dumps(meta, indent=1), encoding="utf-8")
-    entries = [json.loads(p.read_text(encoding="utf-8")) for p in sorted(arch.glob("*.json"), reverse=True)]
+    (arch / f"{stem}.json").write_text(json.dumps(meta, indent=1), encoding="utf-8")
+    entries = [json.loads(p.read_text(encoding="utf-8")) for p in arch.glob("*.json")]
+    entries.sort(key=lambda e: (e["run_date"], e.get("kind") == "monthly"), reverse=True)
     Path("docs/past.html").write_text(render_past(entries), encoding="utf-8")
 
 
-def main():
-    games = finished_games()
+def main(monthly=False):
+    days = MONTHLY_DAYS if monthly else DAYS_BACK
+    top_n = MONTHLY_TOP_N if monthly else TOP_N
+    games = finished_games(days)
     results = []
     for ev in games:
         try:
@@ -353,16 +366,21 @@ def main():
     if games and not results:
         sys.exit("Found games but could not score any; leaving the existing page untouched.")
     results.sort(key=lambda r: r["score"], reverse=True)
-    top = results[:TOP_N]
+    top = results[:top_n]
     today = datetime.now(ET).date()
-    window = f"{(today - timedelta(days=DAYS_BACK)).strftime('%b %-d')} to {(today - timedelta(days=1)).strftime('%b %-d')}"
+    window = f"{(today - timedelta(days=days)).strftime('%b %-d')} to {(today - timedelta(days=1)).strftime('%b %-d')}"
     os.makedirs("docs", exist_ok=True)
-    Path("docs/index.html").write_text(
-        render(top, window, today, '<a href="past.html">Past precaps &rarr;</a>'), encoding="utf-8")
-    save_archive(top, window, today)
-    json.dump(results, open("docs/debug.json", "w"), indent=1)  # for tuning; contains spoilers
-    print(f"{len(games)} games found, {len(results)} scored, wrote top {len(top)}")
+    if monthly:  # digest goes to the archive only; the main page stays as the latest 2-day precap
+        save_archive(top, window, today, kind="monthly")
+    else:
+        Path("docs/index.html").write_text(
+            render(top, window, today, '<a href="past.html">Past precaps &rarr;</a>'), encoding="utf-8")
+        save_archive(top, window, today)
+        json.dump(results, open("docs/debug.json", "w"), indent=1)  # for tuning; contains spoilers
+    print(f"{len(games)} games found, {len(results)} scored, wrote top {len(top)} ({'monthly' if monthly else 'precap'})")
 
 
 if __name__ == "__main__":
-    main()
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--monthly", action="store_true", help="30-day digest, top 10, saved to the archive only")
+    main(monthly=ap.parse_args().monthly)

@@ -26,9 +26,9 @@ FAV_TEAMS = []         # ESPN abbreviations, e.g. ["LAL", "SA", "DEN"] (Spurs = 
 WEIGHTS = {
     "clutch": 20,      # tight game in the last 5 min of regulation / OT
     "comeback": 10,    # winner overcame a big deficit
-    "lead_changes": 5,
+    "lead_changes": 10,
     "star": 20,        # best individual game score of anyone
-    "favorites": 25,   # your players / teams played, and played well
+    "favorites": 20,   # your players / teams played, and played well
     "team_quality": 20,  # how good the two teams are (win %, early-season shrunk toward .500)
 }
 # Subtracted from the total: INJURY_PENALTY * (major players who didn't play / major players on the two rosters)
@@ -171,7 +171,7 @@ def analyze_box(summary, fav_team_codes):
                 name = ath["athlete"].get("displayName", "")
                 played[team["team"].get("abbreviation")].add(norm(name))
                 if norm(name) in favs and mins >= 15:
-                    fav_fit = 0.4 + 0.6 * clamp((gs - 10) / 25)
+                    fav_fit = 0.2 + 0.8 * clamp((gs - 10) / 25)
                     fav_val = max(fav_val, fav_fit)
                     fav_names.append(name)
     return {"star": clamp((best - 20) / 25), "favorites": fav_val, "fav_names": fav_names, "played": played}

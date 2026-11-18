@@ -2,22 +2,50 @@ name: Update watchlist
 on:
   schedule:
     - cron: "0 12 */2 * *"   # every 2 days, 12:00 UTC (~7-8am ET)
-  workflow_dispatch: {}
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: "What to build"
+        type: choice
+        default: precap
+        options:
+          - precap     # the normal 2-day top 5
+          - monthly    # 30-day digest, top 10 (saved under Past precaps)
 permissions:
   contents: write
+  pages: write
+  id-token: write
+concurrency:
+  group: watchlist
+  cancel-in-progress: false
 jobs:
   build:
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with: { python-version: "3.12" }
       - run: pip install -r requirements.txt
-      - run: python build.py
-      - name: Commit page
+      - name: Build
+        run: |
+          if [ "${{ inputs.mode }}" = "monthly" ]; then python build.py --monthly; else python build.py; fi
+      - name: Commit changes
         run: |
           git config user.name "watchlist-bot"
           git config user.email "bot@users.noreply.github.com"
           git add docs
-          git diff --cached --quiet || git commit -m "Update watchlist"
+          git diff --cached --quiet || git commit -m "Update watchlist (${{ inputs.mode || 'precap' }})"
           git push
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with: { path: docs }
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

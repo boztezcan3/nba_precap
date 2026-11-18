@@ -6,6 +6,7 @@ scores each one on YOUR criteria, and writes docs/index.html with the top TOP_N.
 No scores, winners or box-score links ever reach the page.
 """
 import html, json, os, sys, time, unicodedata
+from pathlib import Path
 from datetime import datetime, timedelta
 from zoneinfo import ZoneInfo
 
@@ -28,6 +29,23 @@ WEIGHTS = {
     "favorites": 25,   # your players / teams played, and played well
     "team_quality": 20,  # how good the two teams are (win %, early-season shrunk toward .500)
 }
+# Subtracted from the total: INJURY_PENALTY * (major players who didn't play / major players on the two rosters)
+# e.g. 5 qualifying players across both teams, 3 sat out -> 20 * 3/5 = -12 points
+INJURY_PENALTY = 20
+
+# All-Stars + All-NBA selections from the 2023-24, 2024-25 and 2025-26 seasons.
+# Update this after each All-Star / All-NBA announcement to keep it a rolling 3 years.
+MAJOR_PLAYERS = [
+    "Giannis Antetokounmpo", "Tyrese Haliburton", "Damian Lillard", "Jayson Tatum", "Joel Embiid",
+    "Bam Adebayo", "Paolo Banchero", "Jaylen Brown", "Jalen Brunson", "Tyrese Maxey",
+    "Donovan Mitchell", "Julius Randle", "Trae Young", "Scottie Barnes", "LeBron James",
+    "Kevin Durant", "Nikola Jokic", "Luka Doncic", "Shai Gilgeous-Alexander", "Stephen Curry",
+    "Anthony Edwards", "Devin Booker", "Paul George", "Kawhi Leonard", "Karl-Anthony Towns",
+    "Anthony Davis", "James Harden", "Jaren Jackson Jr.", "Jalen Williams", "Darius Garland",
+    "Evan Mobley", "Cade Cunningham", "Tyler Herro", "Victor Wembanyama", "Pascal Siakam",
+    "Alperen Sengun", "Kyrie Irving", "Domantas Sabonis", "Jamal Murray", "Jalen Johnson",
+    "Jalen Duren", "Chet Holmgren", "Deni Avdija", "Norman Powell", "De'Aaron Fox", "Brandon Ingram",
+]
 # ─────────────────────────────────────────────────────────────────
 
 ET = ZoneInfo("America/New_York")
@@ -50,7 +68,8 @@ def get(url, tries=3):
 
 def norm(s):
     s = unicodedata.normalize("NFKD", s or "")
-    return "".join(c for c in s if not unicodedata.combining(c)).lower().strip()
+    s = "".join(c for c in s if not unicodedata.combining(c)).lower()
+    return s.replace(".", "").replace("'", "").replace("\u2019", "").strip()
 
 
 def clock_seconds(c):
@@ -130,8 +149,10 @@ def analyze_pbp(plays, home_won):
 
 def analyze_box(summary, fav_team_codes):
     best, fav_val, fav_names = 0.0, 0.0, []
+    played = {}
     favs = {norm(n) for n in FAV_PLAYERS}
     for team in summary["boxscore"]["players"]:
+        played.setdefault(team["team"].get("abbreviation"), set())
         if team["team"].get("abbreviation") in fav_team_codes:
             fav_val = max(fav_val, 0.4)
         for grp in team.get("statistics", []):
@@ -146,11 +167,12 @@ def analyze_box(summary, fav_team_codes):
                 gs = game_score(st)
                 best = max(best, gs)
                 name = ath["athlete"].get("displayName", "")
+                played[team["team"].get("abbreviation")].add(norm(name))
                 if norm(name) in favs and mins >= 15:
                     fav_fit = 0.4 + 0.6 * clamp((gs - 10) / 25)
                     fav_val = max(fav_val, fav_fit)
                     fav_names.append(name)
-    return {"star": clamp((best - 20) / 25), "favorites": fav_val, "fav_names": fav_names}
+    return {"star": clamp((best - 20) / 25), "favorites": fav_val, "fav_names": fav_names, "played": played}
 
 
 def team_quality(records):
@@ -161,6 +183,37 @@ def team_quality(records):
         wp = (w + 5) / (w + l + 10)  # shrink toward .500 early in the season
         vals.append(clamp((wp - 0.35) / 0.40))
     return 0.6 * sum(vals) / 2 + 0.4 * min(vals)
+
+
+MAJOR_SET = {norm(n) for n in MAJOR_PLAYERS}
+_ROSTERS = {}
+
+
+def roster_names(team_id):
+    if team_id not in _ROSTERS:
+        athletes = get(f"{BASE}/teams/{team_id}/roster").get("athletes", [])
+        flat = []
+        for a in athletes:  # NBA is a flat list; some sports group by position
+            flat += a["items"] if "items" in a else [a]
+        _ROSTERS[team_id] = {norm(a.get("displayName") or a.get("fullName")) for a in flat}
+    return _ROSTERS[team_id]
+
+
+def injury_share(competitors, played):
+    """Share of major players (on either roster) who did not play. Returns (share, missing, total)."""
+    if not any(played.values()):
+        return 0.0, 0, 0  # no box score data: don't penalize on missing info
+    missing = total = 0
+    for c in competitors:
+        abbr = c["team"]["abbreviation"]
+        try:
+            quals = roster_names(c["team"]["id"]) & MAJOR_SET
+        except Exception as e:
+            print(f"roster fetch failed for {abbr}: {e!r}", file=sys.stderr)
+            continue
+        total += len(quals)
+        missing += len(quals - played.get(abbr, set()))
+    return (missing / total if total else 0.0), missing, total
 
 
 def score_game(ev):
@@ -180,6 +233,9 @@ def score_game(ev):
     parts = {"clutch": clutch, "comeback": pbp["comeback"], "lead_changes": pbp["lead_changes"],
              "star": box["star"], "favorites": box["favorites"], "team_quality": team_quality(recs)}
     total = sum(WEIGHTS[k] * v for k, v in parts.items())
+    share, missing, qualifying = injury_share(comp, box["played"])
+    parts["major_injuries"] = share
+    total = max(0.0, total - INJURY_PENALTY * share)
     tags = []
     if pbp["periods"] > 4: tags.append("Overtime")
     if parts["clutch"] >= 0.55: tags.append("Clutch finish")
@@ -187,6 +243,7 @@ def score_game(ev):
     if parts["lead_changes"] >= 0.6: tags.append("Back and forth")
     if parts["team_quality"] >= 0.7: tags.append("Contenders")
     if parts["star"] >= 0.6: tags.append("Monster individual night")
+    if missing: tags.append(f"{missing} key player{'s' if missing > 1 else ''} out")
     for n in dict.fromkeys(box["fav_names"]): tags.append(f"{n} played")
     when = datetime.fromisoformat(ev["date"].replace("Z", "+00:00")).astimezone(ET)
     return {"score": round(total), "tags": tags, "parts": parts,
@@ -205,7 +262,45 @@ def finished_games():
     return list(out.values())
 
 
-def render(items, window):
+CSS = """
+:root{--bg:#0e1a2b;--panel:#16263c;--ink:#e9eef5;--mute:#8fa3bd;--accent:#ffb703;--line:#25395a}
+@media(prefers-color-scheme:light){:root{--bg:#eef2f7;--panel:#fff;--ink:#0e1a2b;--mute:#566b87;--accent:#c47a00;--line:#d3dbe6}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 Barlow,system-ui,sans-serif}
+main{max-width:680px;margin:0 auto;padding:48px 20px 64px}
+h1{font:700 44px/1 'Barlow Condensed',sans-serif;margin:0 0 6px}
+.sub{color:var(--mute);margin:0 0 20px}
+nav{display:flex;gap:18px;margin:0 0 28px;font-size:15px}
+a{color:var(--accent);text-decoration:none}a:hover{text-decoration:underline}
+article{display:grid;grid-template-columns:44px 1fr auto;gap:16px;align-items:center;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:18px 20px;margin-bottom:12px}
+.rank{font:700 34px 'Barlow Condensed',sans-serif;color:var(--mute)}
+article:first-of-type .rank{color:var(--accent)}
+h2{font:700 28px/1.1 'Barlow Condensed',sans-serif;margin:0}h2 span{color:var(--mute);font-weight:600}
+.date{margin:2px 0 8px;color:var(--mute);font-size:14px}
+ul{display:flex;flex-wrap:wrap;gap:6px;list-style:none;margin:0;padding:0}
+li{font-size:13px;border:1px solid var(--line);border-radius:99px;padding:1px 10px}
+.score{text-align:center}.score b{display:block;font:700 40px/1 'Barlow Condensed',sans-serif;color:var(--accent)}
+.score small{color:var(--mute);font-size:12px}
+.empty{color:var(--mute)}
+.past{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:16px 20px;margin-bottom:12px}
+.past h3{font:700 24px/1.1 'Barlow Condensed',sans-serif;margin:0}.past p{margin:4px 0 8px;color:var(--mute);font-size:14px}
+.past ol{margin:0 0 10px;padding-left:20px;font-size:15px}
+@media(max-width:480px){article{grid-template-columns:32px 1fr;}.score{grid-column:2;text-align:left}.score b{display:inline;font-size:28px}}
+"""
+
+
+def page(title, heading, sub, nav, body):
+    return f"""<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1"><title>{html.escape(title)}</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Barlow:wght@400;500&display=swap" rel="stylesheet">
+<style>{CSS}</style></head><body><main>
+<h1>{html.escape(heading)}</h1>
+<p class="sub">{sub}</p>
+<nav>{nav}</nav>
+{body}
+</main></body></html>"""
+
+
+def render(items, window, run_date, nav, heading="Worth watching"):
     cards = []
     for i, it in enumerate(items, 1):
         tags = "".join(f"<li>{html.escape(t)}</li>" for t in it["tags"]) if SHOW_REASONS else ""
@@ -214,33 +309,34 @@ def render(items, window):
 <p class="date">{html.escape(it['date'])}</p><ul>{tags}</ul></div>
 <div class="score" aria-label="Watch score {it['score']} out of 100"><b>{it['score']}</b><small>watch score</small></div></article>""")
     body = "\n".join(cards) or "<p class='empty'>No finished games in this window yet.</p>"
-    updated = datetime.now(ET).strftime("%b %-d, %Y")
-    return f"""<!doctype html><html lang="en"><head><meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1"><title>Worth Watching</title>
-<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Barlow:wght@400;500&display=swap" rel="stylesheet">
-<style>
-:root{{--bg:#0e1a2b;--panel:#16263c;--ink:#e9eef5;--mute:#8fa3bd;--accent:#ffb703;--line:#25395a}}
-@media(prefers-color-scheme:light){{:root{{--bg:#eef2f7;--panel:#fff;--ink:#0e1a2b;--mute:#566b87;--accent:#c47a00;--line:#d3dbe6}}}}
-*{{box-sizing:border-box}}body{{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 Barlow,system-ui,sans-serif}}
-main{{max-width:680px;margin:0 auto;padding:48px 20px 64px}}
-h1{{font:700 44px/1 'Barlow Condensed',sans-serif;margin:0 0 6px}}
-.sub{{color:var(--mute);margin:0 0 32px}}
-article{{display:grid;grid-template-columns:44px 1fr auto;gap:16px;align-items:center;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:18px 20px;margin-bottom:12px}}
-.rank{{font:700 34px 'Barlow Condensed',sans-serif;color:var(--mute)}}
-article:first-of-type .rank{{color:var(--accent)}}
-h2{{font:700 28px/1.1 'Barlow Condensed',sans-serif;margin:0}}h2 span{{color:var(--mute);font-weight:600}}
-.date{{margin:2px 0 8px;color:var(--mute);font-size:14px}}
-ul{{display:flex;flex-wrap:wrap;gap:6px;list-style:none;margin:0;padding:0}}
-li{{font-size:13px;border:1px solid var(--line);border-radius:99px;padding:1px 10px}}
-.score{{text-align:center}}.score b{{display:block;font:700 40px/1 'Barlow Condensed',sans-serif;color:var(--accent)}}
-.score small{{color:var(--mute);font-size:12px}}
-.empty{{color:var(--mute)}}
-@media(max-width:480px){{article{{grid-template-columns:32px 1fr;}}.score{{grid-column:2;text-align:left}}.score b{{display:inline;font-size:28px}}}}
-</style></head><body><main>
-<h1>Worth watching</h1>
-<p class="sub">Top {len(items)} games from {html.escape(window)}. No scores, no winners. Updated {updated}.</p>
-{body}
-</main></body></html>"""
+    sub = f"Top {len(items)} games from {html.escape(window)}. No scores, no winners. Updated {run_date.strftime('%b %-d, %Y')}."
+    return page("Worth Watching", heading, sub, nav, body)
+
+
+def render_past(entries):
+    blocks = []
+    for e in entries:  # newest first
+        games = "".join(f"<li>{html.escape(g['away'])} at {html.escape(g['home'])}</li>" for g in e["items"])
+        blocks.append(f"""<div class="past"><h3><a href="archive/{e['run_date']}.html">{html.escape(e['label'])}</a></h3>
+<p>Games from {html.escape(e['window'])}</p><ol>{games}</ol></div>""")
+    body = "\n".join(blocks) or "<p class='empty'>Nothing archived yet. The first one appears after the next run.</p>"
+    return page("Past precaps", "Past precaps", "Every earlier edition, newest first. Still spoiler-free.",
+                '<a href="index.html">&larr; Latest</a>', body)
+
+
+def save_archive(top, window, today):
+    """Write today's edition to docs/archive/ and rebuild docs/past.html from every saved edition."""
+    arch = Path("docs/archive")
+    arch.mkdir(parents=True, exist_ok=True)
+    key = today.strftime("%Y-%m-%d")
+    nav = '<a href="../index.html">&larr; Latest</a><a href="../past.html">All past precaps</a>'
+    (arch / f"{key}.html").write_text(
+        render(top, window, today, nav, heading=f"Precap, {today.strftime('%b %-d')}"), encoding="utf-8")
+    meta = {"run_date": key, "label": today.strftime("%A, %b %-d, %Y"), "window": window,
+            "items": [{k: g[k] for k in ("away", "home", "date", "score", "tags")} for g in top]}
+    (arch / f"{key}.json").write_text(json.dumps(meta, indent=1), encoding="utf-8")
+    entries = [json.loads(p.read_text(encoding="utf-8")) for p in sorted(arch.glob("*.json"), reverse=True)]
+    Path("docs/past.html").write_text(render_past(entries), encoding="utf-8")
 
 
 def main():
@@ -261,7 +357,9 @@ def main():
     today = datetime.now(ET).date()
     window = f"{(today - timedelta(days=DAYS_BACK)).strftime('%b %-d')} to {(today - timedelta(days=1)).strftime('%b %-d')}"
     os.makedirs("docs", exist_ok=True)
-    open("docs/index.html", "w", encoding="utf-8").write(render(top, window))
+    Path("docs/index.html").write_text(
+        render(top, window, today, '<a href="past.html">Past precaps &rarr;</a>'), encoding="utf-8")
+    save_archive(top, window, today)
     json.dump(results, open("docs/debug.json", "w"), indent=1)  # for tuning; contains spoilers
     print(f"{len(games)} games found, {len(results)} scored, wrote top {len(top)}")
 

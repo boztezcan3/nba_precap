@@ -1,0 +1,69 @@
+{
+ "run_date": "2026-11-19",
+ "file": "2026-11-19",
+ "kind": "precap",
+ "label": "Thursday, Nov 19, 2026",
+ "window": "Nov 17 to Nov 18",
+ "items": [
+  {
+   "away": "Charlotte Hornets",
+   "home": "Los Angeles Lakers",
+   "date": "Tue, Nov 17",
+   "score": 63,
+   "tags": [
+    "Overtime",
+    "Clutch finish",
+    "Big comeback",
+    "Monster individual night",
+    "Luka Doncic played"
+   ]
+  },
+  {
+   "away": "Boston Celtics",
+   "home": "Denver Nuggets",
+   "date": "Wed, Nov 18",
+   "score": 61,
+   "tags": [
+    "Clutch finish",
+    "Big comeback",
+    "Back and forth",
+    "Nikola Jokic played"
+   ]
+  },
+  {
+   "away": "Memphis Grizzlies",
+   "home": "Cleveland Cavaliers",
+   "date": "Wed, Nov 18",
+   "score": 40,
+   "tags": [
+    "Clutch finish",
+    "Big comeback",
+    "Back and forth",
+    "1 key player out"
+   ]
+  },
+  {
+   "away": "Philadelphia 76ers",
+   "home": "Orlando Magic",
+   "date": "Wed, Nov 18",
+   "score": 40,
+   "tags": [
+    "Clutch finish",
+    "Big comeback",
+    "3 key players out",
+    "LeBron James played"
+   ]
+  },
+  {
+   "away": "Portland Trail Blazers",
+   "home": "Minnesota Timberwolves",
+   "date": "Tue, Nov 17",
+   "score": 38,
+   "tags": [
+    "Clutch finish",
+    "Back and forth",
+    "2 key players out"
+   ]
+  }
+ ]
+}

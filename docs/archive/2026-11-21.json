@@ -1,0 +1,67 @@
+{
+ "run_date": "2026-11-21",
+ "file": "2026-11-21",
+ "kind": "precap",
+ "label": "Saturday, Nov 21, 2026",
+ "window": "Nov 19 to Nov 20",
+ "items": [
+  {
+   "away": "Houston Rockets",
+   "home": "Denver Nuggets",
+   "date": "Fri, Nov 20",
+   "score": 61,
+   "tags": [
+    "Clutch finish",
+    "Back and forth",
+    "Alperen Sengun played",
+    "Nikola Jokic played"
+   ]
+  },
+  {
+   "away": "Sacramento Kings",
+   "home": "Los Angeles Lakers",
+   "date": "Fri, Nov 20",
+   "score": 48,
+   "tags": [
+    "Clutch finish",
+    "Big comeback",
+    "Back and forth",
+    "Luka Doncic played"
+   ]
+  },
+  {
+   "away": "Washington Wizards",
+   "home": "Chicago Bulls",
+   "date": "Fri, Nov 20",
+   "score": 37,
+   "tags": [
+    "Clutch finish",
+    "Big comeback",
+    "Back and forth"
+   ]
+  },
+  {
+   "away": "Indiana Pacers",
+   "home": "Cleveland Cavaliers",
+   "date": "Fri, Nov 20",
+   "score": 30,
+   "tags": [
+    "Big comeback",
+    "Back and forth",
+    "Monster individual night",
+    "2 key players out"
+   ]
+  },
+  {
+   "away": "Orlando Magic",
+   "home": "Brooklyn Nets",
+   "date": "Fri, Nov 20",
+   "score": 29,
+   "tags": [
+    "Clutch finish",
+    "Back and forth",
+    "1 key player out"
+   ]
+  }
+ ]
+}

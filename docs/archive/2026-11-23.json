@@ -1,0 +1,65 @@
+{
+ "run_date": "2026-11-23",
+ "file": "2026-11-23",
+ "kind": "precap",
+ "label": "Monday, Nov 23, 2026",
+ "window": "Nov 21 to Nov 22",
+ "items": [
+  {
+   "away": "Denver Nuggets",
+   "home": "Chicago Bulls",
+   "date": "Sun, Nov 22",
+   "score": 59,
+   "tags": [
+    "Overtime",
+    "Clutch finish",
+    "Back and forth",
+    "Monster individual night",
+    "1 key player out",
+    "Nikola Jokic played"
+   ]
+  },
+  {
+   "away": "Milwaukee Bucks",
+   "home": "Philadelphia 76ers",
+   "date": "Sat, Nov 21",
+   "score": 55,
+   "tags": [
+    "Back and forth",
+    "Monster individual night",
+    "1 key player out",
+    "LeBron James played"
+   ]
+  },
+  {
+   "away": "New Orleans Pelicans",
+   "home": "San Antonio Spurs",
+   "date": "Sat, Nov 21",
+   "score": 51,
+   "tags": [
+    "Monster individual night",
+    "Victor Wembanyama played"
+   ]
+  },
+  {
+   "away": "Portland Trail Blazers",
+   "home": "New York Knicks",
+   "date": "Sat, Nov 21",
+   "score": 34,
+   "tags": [
+    "Clutch finish",
+    "1 key player out"
+   ]
+  },
+  {
+   "away": "Indiana Pacers",
+   "home": "New York Knicks",
+   "date": "Sun, Nov 22",
+   "score": 33,
+   "tags": [
+    "Back and forth",
+    "1 key player out"
+   ]
+  }
+ ]
+}

@@ -1,239 +1,239 @@
 [
  {
-  "score": 61,
+  "score": 59,
   "tags": [
+   "Overtime",
    "Clutch finish",
    "Back and forth",
-   "Alperen Sengun played",
+   "Monster individual night",
+   "1 key player out",
    "Nikola Jokic played"
   ],
   "parts": {
-   "clutch": 0.554,
-   "comeback": 0.25,
-   "lead_changes": 1.0,
-   "star": 0.4,
-   "favorites": 0.8400000000000001,
-   "team_quality": 0.6180555555555557,
-   "major_injuries": 0.0
-  },
-  "away": "Houston Rockets",
-  "home": "Denver Nuggets",
-  "date": "Fri, Nov 20"
- },
- {
-  "score": 48,
-  "tags": [
-   "Clutch finish",
-   "Big comeback",
-   "Back and forth",
-   "Luka Doncic played"
-  ],
-  "parts": {
-   "clutch": 0.8286666666666667,
-   "comeback": 0.55,
-   "lead_changes": 0.6666666666666666,
-   "star": 0.2999999999999997,
-   "favorites": 0.41759999999999997,
-   "team_quality": 0.2652777777777778,
-   "major_injuries": 0.0
-  },
-  "away": "Sacramento Kings",
-  "home": "Los Angeles Lakers",
-  "date": "Fri, Nov 20"
- },
- {
-  "score": 37,
-  "tags": [
-   "Clutch finish",
-   "Big comeback",
-   "Back and forth"
-  ],
-  "parts": {
-   "clutch": 0.7933333333333334,
-   "comeback": 0.75,
-   "lead_changes": 0.7333333333333333,
-   "star": 0.23200000000000004,
-   "favorites": 0.0,
-   "team_quality": 0.06055555555555557,
-   "major_injuries": 0.0
-  },
-  "away": "Washington Wizards",
-  "home": "Chicago Bulls",
-  "date": "Fri, Nov 20"
- },
- {
-  "score": 30,
-  "tags": [
-   "Big comeback",
-   "Back and forth",
-   "Monster individual night",
-   "2 key players out"
-  ],
-  "parts": {
-   "clutch": 0.10666666666666669,
-   "comeback": 0.7,
-   "lead_changes": 0.7333333333333333,
-   "star": 0.9039999999999998,
-   "favorites": 0.0,
-   "team_quality": 0.18696581196581205,
-   "major_injuries": 0.4
-  },
-  "away": "Indiana Pacers",
-  "home": "Cleveland Cavaliers",
-  "date": "Fri, Nov 20"
- },
- {
-  "score": 29,
-  "tags": [
-   "Clutch finish",
-   "Back and forth",
-   "1 key player out"
-  ],
-  "parts": {
-   "clutch": 0.9306666666666666,
-   "comeback": 0.35,
-   "lead_changes": 1.0,
-   "star": 0.24799999999999997,
-   "favorites": 0.0,
-   "team_quality": 0.0975,
-   "major_injuries": 0.5
-  },
-  "away": "Orlando Magic",
-  "home": "Brooklyn Nets",
-  "date": "Fri, Nov 20"
- },
- {
-  "score": 28,
-  "tags": [
-   "Clutch finish",
-   "1 key player out"
-  ],
-  "parts": {
-   "clutch": 0.5746666666666667,
-   "comeback": 0.15,
-   "lead_changes": 0.2,
-   "star": 0.0,
-   "favorites": 0.4,
-   "team_quality": 0.5665384615384617,
-   "major_injuries": 0.3333333333333333
-  },
-  "away": "New York Knicks",
-  "home": "Minnesota Timberwolves",
-  "date": "Thu, Nov 19"
- },
- {
-  "score": 26,
-  "tags": [
-   "Back and forth",
-   "1 key player out",
-   "Victor Wembanyama played"
-  ],
-  "parts": {
-   "clutch": 0.07999999999999999,
+   "clutch": 0.6315,
    "comeback": 0.3,
-   "lead_changes": 0.6,
-   "star": 0.12400000000000005,
-   "favorites": 0.6192,
-   "team_quality": 0.3004807692307693,
-   "major_injuries": 0.25
-  },
-  "away": "LA Clippers",
-  "home": "San Antonio Spurs",
-  "date": "Thu, Nov 19"
- },
- {
-  "score": 25,
-  "tags": [
-   "Clutch finish",
-   "Big comeback",
-   "2 key players out"
-  ],
-  "parts": {
-   "clutch": 0.7634000000000001,
-   "comeback": 0.9,
-   "lead_changes": 0.13333333333333333,
-   "star": 0.4400000000000003,
-   "favorites": 0.0,
-   "team_quality": 0.2058404558404558,
-   "major_injuries": 0.6666666666666666
-  },
-  "away": "New Orleans Pelicans",
-  "home": "Oklahoma City Thunder",
-  "date": "Fri, Nov 20"
- },
- {
-  "score": 24,
-  "tags": [
-   "Clutch finish",
-   "2 key players out"
-  ],
-  "parts": {
-   "clutch": 0.892,
-   "comeback": 0.1,
-   "lead_changes": 0.5333333333333333,
-   "star": 0.15599999999999994,
-   "favorites": 0.0,
-   "team_quality": 0.3153846153846154,
-   "major_injuries": 0.5
-  },
-  "away": "Toronto Raptors",
-  "home": "Detroit Pistons",
-  "date": "Fri, Nov 20"
- },
- {
-  "score": 24,
-  "tags": [
-   "Back and forth",
-   "1 key player out"
-  ],
-  "parts": {
-   "clutch": 0.5053333333333334,
-   "comeback": 0.4,
-   "lead_changes": 1.0,
-   "star": 0.12400000000000005,
-   "favorites": 0.0,
+   "lead_changes": 0.8666666666666667,
+   "star": 0.8960000000000002,
+   "favorites": 1.0,
    "team_quality": 0.1875,
    "major_injuries": 0.3333333333333333
   },
-  "away": "Portland Trail Blazers",
-  "home": "Milwaukee Bucks",
-  "date": "Thu, Nov 19"
+  "away": "Denver Nuggets",
+  "home": "Chicago Bulls",
+  "date": "Sun, Nov 22"
  },
  {
-  "score": 19,
+  "score": 55,
   "tags": [
-   "Big comeback"
+   "Back and forth",
+   "Monster individual night",
+   "1 key player out",
+   "LeBron James played"
   ],
   "parts": {
-   "clutch": 0.02666666666666666,
-   "comeback": 0.7,
-   "lead_changes": 0.4,
-   "star": 0.18400000000000005,
-   "favorites": 0.0,
-   "team_quality": 0.18769230769230766,
-   "major_injuries": 0.0
+   "clutch": 0.41300000000000003,
+   "comeback": 0.35,
+   "lead_changes": 0.9333333333333333,
+   "star": 1.0,
+   "favorites": 0.6192,
+   "team_quality": 0.2652777777777778,
+   "major_injuries": 0.2
   },
-  "away": "Charlotte Hornets",
-  "home": "Atlanta Hawks",
-  "date": "Fri, Nov 20"
+  "away": "Milwaukee Bucks",
+  "home": "Philadelphia 76ers",
+  "date": "Sat, Nov 21"
  },
  {
-  "score": 0,
+  "score": 51,
+  "tags": [
+   "Monster individual night",
+   "Victor Wembanyama played"
+  ],
+  "parts": {
+   "clutch": 0.0,
+   "comeback": 0.15,
+   "lead_changes": 0.4,
+   "star": 1.0,
+   "favorites": 1.0,
+   "team_quality": 0.27777777777777785,
+   "major_injuries": 0.0
+  },
+  "away": "New Orleans Pelicans",
+  "home": "San Antonio Spurs",
+  "date": "Sat, Nov 21"
+ },
+ {
+  "score": 34,
+  "tags": [
+   "Clutch finish",
+   "1 key player out"
+  ],
+  "parts": {
+   "clutch": 0.6213333333333333,
+   "comeback": 0.1,
+   "lead_changes": 0.13333333333333333,
+   "star": 0.24400000000000005,
+   "favorites": 0.4,
+   "team_quality": 0.5673076923076922,
+   "major_injuries": 0.25
+  },
+  "away": "Portland Trail Blazers",
+  "home": "New York Knicks",
+  "date": "Sat, Nov 21"
+ },
+ {
+  "score": 33,
+  "tags": [
+   "Back and forth",
+   "1 key player out"
+  ],
+  "parts": {
+   "clutch": 0.21333333333333335,
+   "comeback": 0.35,
+   "lead_changes": 0.7333333333333333,
+   "star": 0.504,
+   "favorites": 0.4,
+   "team_quality": 0.21759259259259256,
+   "major_injuries": 0.25
+  },
+  "away": "Indiana Pacers",
+  "home": "New York Knicks",
+  "date": "Sun, Nov 22"
+ },
+ {
+  "score": 33,
+  "tags": [
+   "Clutch finish",
+   "Big comeback",
+   "Back and forth",
+   "1 key player out"
+  ],
+  "parts": {
+   "clutch": 0.9373333333333334,
+   "comeback": 0.65,
+   "lead_changes": 1.0,
+   "star": 0.027999999999999973,
+   "favorites": 0.0,
+   "team_quality": 0.19903846153846155,
+   "major_injuries": 0.3333333333333333
+  },
+  "away": "Boston Celtics",
+  "home": "Sacramento Kings",
+  "date": "Sat, Nov 21"
+ },
+ {
+  "score": 24,
+  "tags": [
+   "Clutch finish",
+   "Big comeback",
+   "2 key players out"
+  ],
+  "parts": {
+   "clutch": 0.9413333333333334,
+   "comeback": 0.55,
+   "lead_changes": 0.26666666666666666,
+   "star": 0.015999999999999945,
+   "favorites": 0.0,
+   "team_quality": 0.4768518518518518,
+   "major_injuries": 0.6666666666666666
+  },
+  "away": "Boston Celtics",
+  "home": "Golden State Warriors",
+  "date": "Sun, Nov 22"
+ },
+ {
+  "score": 21,
+  "tags": [
+   "Big comeback",
+   "1 key player out"
+  ],
+  "parts": {
+   "clutch": 0.24933333333333335,
+   "comeback": 0.65,
+   "lead_changes": 0.4,
+   "star": 0.015999999999999945,
+   "favorites": 0.0,
+   "team_quality": 0.579059829059829,
+   "major_injuries": 0.3333333333333333
+  },
+  "away": "Detroit Pistons",
+  "home": "Atlanta Hawks",
+  "date": "Sun, Nov 22"
+ },
+ {
+  "score": 18,
+  "tags": [
+   "Back and forth",
+   "1 key player out"
+  ],
+  "parts": {
+   "clutch": 0.42146666666666666,
+   "comeback": 0.3,
+   "lead_changes": 0.7333333333333333,
+   "star": 0.3159999999999998,
+   "favorites": 0.0,
+   "team_quality": 0.15416666666666667,
+   "major_injuries": 0.5
+  },
+  "away": "Dallas Mavericks",
+  "home": "Utah Jazz",
+  "date": "Sun, Nov 22"
+ },
+ {
+  "score": 12,
+  "tags": [
+   "Big comeback",
+   "1 key player out"
+  ],
+  "parts": {
+   "clutch": 0.16000000000000003,
+   "comeback": 0.55,
+   "lead_changes": 0.13333333333333333,
+   "star": 0.0,
+   "favorites": 0.4,
+   "team_quality": 0.6990740740740742,
+   "major_injuries": 1.0
+  },
+  "away": "Memphis Grizzlies",
+  "home": "Minnesota Timberwolves",
+  "date": "Sat, Nov 21"
+ },
+ {
+  "score": 11,
+  "tags": [
+   "Monster individual night",
+   "4 key players out"
+  ],
+  "parts": {
+   "clutch": 0.13333333333333336,
+   "comeback": 0.0,
+   "lead_changes": 0.0,
+   "star": 0.664,
+   "favorites": 0.0,
+   "team_quality": 0.5299145299145299,
+   "major_injuries": 0.8
+  },
+  "away": "Oklahoma City Thunder",
+  "home": "Miami Heat",
+  "date": "Sun, Nov 22"
+ },
+ {
+  "score": 11,
   "tags": [
    "1 key player out"
   ],
   "parts": {
-   "clutch": 0.13973333333333335,
-   "comeback": 0.1,
-   "lead_changes": 0.13333333333333333,
+   "clutch": 0.23733333333333334,
+   "comeback": 0.45,
+   "lead_changes": 0.5333333333333333,
    "star": 0.0,
    "favorites": 0.0,
-   "team_quality": 0.12750000000000003,
-   "major_injuries": 0.5
+   "team_quality": 0.15884615384615386,
+   "major_injuries": 0.3333333333333333
   },
-  "away": "Phoenix Suns",
-  "home": "Utah Jazz",
-  "date": "Fri, Nov 20"
+  "away": "LA Clippers",
+  "home": "Dallas Mavericks",
+  "date": "Sat, Nov 21"
  },
  {
   "score": 0,
@@ -246,11 +246,11 @@
    "lead_changes": 0.0,
    "star": 0.0,
    "favorites": 0.0,
-   "team_quality": 0.4903846153846155,
-   "major_injuries": 1.0
+   "team_quality": 0.22115384615384617,
+   "major_injuries": 0.3333333333333333
   },
-  "away": "Golden State Warriors",
-  "home": "Memphis Grizzlies",
-  "date": "Thu, Nov 19"
+  "away": "Orlando Magic",
+  "home": "Washington Wizards",
+  "date": "Sun, Nov 22"
  }
 ]

@@ -1,0 +1,62 @@
+{
+ "run_date": "2026-11-25",
+ "file": "2026-11-25",
+ "kind": "precap",
+ "label": "Wednesday, Nov 25, 2026",
+ "window": "Nov 23 to Nov 24",
+ "items": [
+  {
+   "away": "Phoenix Suns",
+   "home": "New Orleans Pelicans",
+   "date": "Mon, Nov 23",
+   "score": 39,
+   "tags": [
+    "Overtime",
+    "Clutch finish",
+    "Big comeback",
+    "Back and forth"
+   ]
+  },
+  {
+   "away": "Portland Trail Blazers",
+   "home": "Philadelphia 76ers",
+   "date": "Mon, Nov 23",
+   "score": 31,
+   "tags": [
+    "Back and forth",
+    "1 key player out",
+    "LeBron James played"
+   ]
+  },
+  {
+   "away": "Milwaukee Bucks",
+   "home": "Toronto Raptors",
+   "date": "Mon, Nov 23",
+   "score": 29,
+   "tags": [
+    "Clutch finish",
+    "Big comeback",
+    "Back and forth",
+    "1 key player out"
+   ]
+  },
+  {
+   "away": "LA Clippers",
+   "home": "Houston Rockets",
+   "date": "Mon, Nov 23",
+   "score": 27,
+   "tags": [
+    "Alperen Sengun played"
+   ]
+  },
+  {
+   "away": "Dallas Mavericks",
+   "home": "Denver Nuggets",
+   "date": "Tue, Nov 24",
+   "score": 24,
+   "tags": [
+    "Nikola Jokic played"
+   ]
+  }
+ ]
+}

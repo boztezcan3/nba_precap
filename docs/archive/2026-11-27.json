@@ -1,0 +1,63 @@
+{
+ "run_date": "2026-11-27",
+ "file": "2026-11-27",
+ "kind": "precap",
+ "label": "Friday, Nov 27, 2026",
+ "window": "Nov 25 to Nov 26",
+ "items": [
+  {
+   "away": "San Antonio Spurs",
+   "home": "Portland Trail Blazers",
+   "date": "Wed, Nov 25",
+   "score": 69,
+   "tags": [
+    "Clutch finish",
+    "Back and forth",
+    "Contenders",
+    "Monster individual night",
+    "1 key player out",
+    "Victor Wembanyama played"
+   ]
+  },
+  {
+   "away": "Miami Heat",
+   "home": "Philadelphia 76ers",
+   "date": "Wed, Nov 25",
+   "score": 41,
+   "tags": [
+    "1 key player out",
+    "LeBron James played"
+   ]
+  },
+  {
+   "away": "Minnesota Timberwolves",
+   "home": "Oklahoma City Thunder",
+   "date": "Wed, Nov 25",
+   "score": 38,
+   "tags": [
+    "Clutch finish",
+    "Big comeback",
+    "3 key players out"
+   ]
+  },
+  {
+   "away": "Phoenix Suns",
+   "home": "Houston Rockets",
+   "date": "Wed, Nov 25",
+   "score": 33,
+   "tags": [
+    "Alperen Sengun played"
+   ]
+  },
+  {
+   "away": "Cleveland Cavaliers",
+   "home": "New York Knicks",
+   "date": "Wed, Nov 25",
+   "score": 24,
+   "tags": [
+    "Big comeback",
+    "1 key player out"
+   ]
+  }
+ ]
+}
